@@ -1,0 +1,56 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Build outputs
+production_build/
+dist/
+*.log
+*.tar.gz
+
+# Old/unused files
+pixera_frontend/server.js
+pixera_frontend/public/
+start_pixera_countdowns.sh
+package-lock.json
+
+# Logs
+logs/
+*.log
+*.log.*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# PIDs
+*.pid
+
+# OS
+Thumbs.db
+

@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Make full app height */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+
+  /* Font stays as originally defined */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+
+  /* ★ NEW: Dark background & light text */
+  background-color: #1f1f1f; /* Tailwind equivalent: bg-gray-900 */
+  color: #ffffff; /* Ensures text remains readable */
+}
