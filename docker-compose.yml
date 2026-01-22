@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # --- PRODUCTION SERVICES ---
+  backend:
+    build: ./pixera_backend
+    profiles: ["prod"]
+    container_name: pixera-backend-prod
+    environment:
+      - PIXERA_HOST=192.168.1.100  # Set your actual Pixera IP here
+      - PIXERA_PORT=4023
+    ports:
+      - "8000:8000"
+    restart: always
+
+  frontend:
+    build: ./pixera_frontend
+    profiles: ["prod"]
+    container_name: pixera-frontend-prod
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  # --- DEVELOPMENT SERVICES ---
+  backend-dev:
+    build: ./pixera_backend
+    profiles: ["dev"]
+    networks:
+      default:
+        aliases:
+          - backend # This tells Docker "You can also call me 'backend'"
+    container_name: pixera-backend-dev
+    environment:
+      - PIXERA_HOST=192.168.68.92      # Maybe use a local simulator for dev
+      - PIXERA_PORT=4023
+    volumes:
+      - ./pixera_backend:/app
+    ports:
+      - "8001:8000" # Use a different port so they don't clash
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend-dev:
+    build:
+      context: ./pixera_frontend
+      target: build-stage
+    profiles: ["dev"]
+    container_name: pixera-frontend-dev
+    volumes:
+      - ./pixera_frontend:/app
+      - /app/node_modules
+    ports:
+      - "3001:5173"
+    command: npm run dev -- --host
