@@ -25,7 +25,7 @@ PIXERA_METHODS = {
 }
 
 # --------------------- CONFIG ---------------------
-g_LogAll = True
+g_LogAll = False
 
 shared_data: Dict[str, Any] = {
     "timelines": {},
@@ -450,20 +450,19 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.get("/api/status")
+@app.get("/status")
 async def get_status():
     with data_lock:
         log(f"Send Snapshot: {shared_data}")
         return shared_data
 
-@app.get("/api/polling/state")
+@app.get("/polling/state")
 async def get_polling_state():
     """Get the current polling state."""
     with data_lock:
         return shared_data["polling"]
 
-@app.post("/api/polling/enable")
+@app.post("/polling/enable")
 async def enable_polling():
     """Enable polling and start 6-hour auto-disable timer."""
     global polling_task, auto_disable_task
@@ -505,7 +504,7 @@ async def enable_polling():
     
     return {"status": "enabled", "polling": shared_data["polling"]}
 
-@app.post("/api/polling/disable")
+@app.post("/polling/disable")
 async def disable_polling():
     """Disable polling and cancel auto-disable timer."""
     global auto_disable_task
@@ -528,7 +527,7 @@ async def disable_polling():
     await broadcast_polling_state()
     return {"status": "disabled", "polling": shared_data["polling"]}
 
-@app.post("/api/force_update")
+@app.post("/force_update")
 async def force_update():
     log("Force update requested via API.", "EVENT")
     await get_project_name()

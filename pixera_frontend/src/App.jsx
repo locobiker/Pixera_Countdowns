@@ -32,7 +32,11 @@ export default function App() {
 
   React.useEffect(() => {
     const protocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const ws = new WebSocket(`${protocol}://${window.location.host}/ws`);
+    const wsUrl = `${protocol}://${window.location.host}/ws`;
+    
+    console.log("Attempting WebSocket connection to:", wsUrl); 
+    
+    const ws = new WebSocket(wsUrl);
     ws.onopen = () => {
       console.log("WebSocket connected");
       setConnected(true);
