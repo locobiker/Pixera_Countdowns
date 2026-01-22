@@ -17,7 +17,8 @@ export default function App() {
   React.useEffect(() => {
     const fetchPollingState = async () => {
       try {
-        const response = await fetch(`http://${window.location.hostname}:8000/api/polling/state`);
+        // const response = await fetch(`http://${window.location.hostname}:8000/api/polling/state`);
+        const response = await fetch(`/api/polling/state`);
         if (response.ok) {
           const data = await response.json();
           setPollingEnabled(data.enabled || false);
@@ -30,8 +31,8 @@ export default function App() {
   }, []);
 
   React.useEffect(() => {
-    const ws = new WebSocket(`ws://${window.location.hostname}:8000/ws`);
-
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const ws = new WebSocket(`${protocol}://${window.location.host}/ws`);
     ws.onopen = () => {
       console.log("WebSocket connected");
       setConnected(true);
@@ -90,7 +91,9 @@ export default function App() {
     setIsToggling(true);
     try {
       const endpoint = pollingEnabled ? "disable" : "enable";
-      const url = `http://${window.location.hostname}:8000/api/polling/${endpoint}`;
+      //const url = `http://${window.location.hostname}:8000/api/polling/${endpoint}`;
+      const url = `/api/polling/${endpoint}`;
+
       console.log("Toggling polling:", url);
       
       const response = await fetch(url, {
