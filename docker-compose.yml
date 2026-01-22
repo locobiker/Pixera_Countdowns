@@ -5,9 +5,13 @@ services:
   backend:
     build: ./pixera_backend
     profiles: ["prod"]
+    networks:
+      default:
+        aliases:
+          - backend # This tells Docker "You can also call me 'backend'"
     container_name: pixera-backend-prod
     environment:
-      - PIXERA_HOST=192.168.1.100  # Set your actual Pixera IP here
+      - PIXERA_HOST=192.168.68.92  # Set your actual Pixera IP here
       - PIXERA_PORT=4023
     ports:
       - "8000:8000"
